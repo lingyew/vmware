@@ -1,4 +1,6 @@
 ---
+# ansible-playbook -i hosts -e 'host_key_checking=false' test1.yml
+
 - name: Create VMware guest
   hosts: all
   connection: ssh
