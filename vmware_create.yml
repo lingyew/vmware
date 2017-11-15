@@ -91,19 +91,19 @@
         template: "{{ template }}"
         folder: "{{ folder }}"
         disk:
-          size_gb: "{{ disk }}"
-          type: "{{ disktype }}"
-          datastore: "{{ datastore }}"
+          - size_gb: "{{ disk }}"
+            type: "{{ disktype }}"
+            datastore: "{{ datastore }}"
         hardware:
-          memory_mb: "{{ memory }}"
-          num_cpus: "{{ cpu }}"
-          scsi: paravirtual
+          - memory_mb: "{{ memory }}"
+            num_cpus: "{{ cpu }}"
+            scsi: paravirtual
         networks:
-          ip: "{{ vmip }}"
-          netmask: "{{ netmask }}"
-          gateway: "{{ gateway }}"
-          dns_servers: "{{ dns }}"
-          device_type: "{{ devicetype }}"
+          - ip: "{{ vmip }}"
+            netmask: "{{ netmask }}"
+            gateway: "{{ gateway }}"
+            dns_servers: "{{ dns }}"
+            device_type: "{{ devicetype }}"
         wait_for_ip_address: yes
         state: poweredon
       
