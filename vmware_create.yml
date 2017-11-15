@@ -1,0 +1,111 @@
+---
+- name: Create VMware guest
+  hosts: all
+  connection: ssh
+  gather_facts: False
+
+  vars_prompt:
+    - name: "vcenter"
+      prompt: "vCenter hostname?"
+      default: "192.168.1.108"
+      private: no
+    - name: "user"
+      prompt: "Enter username"
+      default: "administrator@vsphere.local"
+      private: no
+    - name: "pass"
+      prompt: "Enter password"
+      private: yes
+    - name: "esxi_hostname"
+      prompt: "ESXi Hostname"
+      default: "192.168.1.107"
+      private: no
+    - name: "datacenter"
+      prompt: "Datacenter"
+      default: "Datacenter"
+      private: no
+    - name: "vmname"
+      prompt: "VM Name"
+      default: "testvm"
+      private: no
+      
+    - name: "folder"
+      prompt: "Folder to store your VM"
+      default: "/testvms"
+      private: no
+    - name: "template"
+      prompt: "Template?"
+      default: "CentOS"
+      private: no
+    - name: "disk"
+      prompt: "Disk Capacity GB"
+      default: "10"
+      private: no
+    - name: "disktype"
+      prompt: "Disk Type"
+      default: "thin"
+      private: no
+    - name: "memory"
+      prompt: "Memory Size"
+      default: "1024"
+      private: no
+    - name: "cpu"
+      prompt: "Number of CPU"
+      default: "1"
+      private: no
+    - name: "vmip"
+      prompt: "VM IP Address"
+      default: "192.168.1.30"
+      private: no     
+    - name: "netmask"
+      prompt: "Netmask"
+      default: 255.255.255.0
+      private: no
+    - name: "gateway"
+      prompt: "Gateway"
+      default: "192.168.1.1"
+      private: no
+    - name: "dns"
+      prompt: "DNS"
+      default: "8.8.8.8"
+      private: no
+    - name: "devicetype"
+      prompt: "Device Type"
+      default: "vmxnet3"
+      private: no
+    - name: "datastore"
+      prompt: "Datastore?"
+      default: "datastore1"
+      private: no
+
+  tasks:
+  - name: Deploy guest from template
+    vsphere_guest:
+      validate_certs: False
+      hostname: "{{ vcenter }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      esxi_hostname: "{{ esxi_hostname }}"
+      datacenter: "{{ datacenter }}"
+      name: "{{ vmname }}"
+      template: "{{ template }}"
+      folder: "{{ folder }}"
+      disk:
+      - size_gb: "{{ disk }}"
+        type: "{{ disktype }}"
+        datastore: "{{ datastore }}"
+      hardware:
+      - memory_mb: "{{ memory }}"
+        num_cpus: "{{ cpu }}"
+        scsi: paravirtual
+      networks:
+      - name: VM Network
+        ip: "{{ vmip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        dns_servers: "{{ dns }}"
+        device_type: "{{ devicetype }}"
+    wait_for_ip_address: yes
+    state: poweredon
+      
+      
