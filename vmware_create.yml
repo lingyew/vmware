@@ -1,9 +1,7 @@
 ---
-# ansible-playbook -i hosts -e 'host_key_checking=false' test1.yml
-
 - name: Create VMware guest
   hosts: all
-  connection: ssh
+  connection: local
   gather_facts: False
 
   vars_prompt:
@@ -30,25 +28,24 @@
       prompt: "VM Name"
       default: "testvm"
       private: no
-      
-    - name: "folder"
-      prompt: "Folder to store your VM"
-      default: "/testvms"
-      private: no
+#    - name: "folder"
+#      prompt: "Folder to store your VM"
+#      default: "/Datacenter/datastore1/testvms/"
+#      private: no
     - name: "template"
       prompt: "Template?"
-      default: "CentOS"
+      default: "centos_template"
       private: no
     - name: "disk"
       prompt: "Disk Capacity GB"
-      default: "10"
+      default: "20"
       private: no
     - name: "disktype"
       prompt: "Disk Type"
       default: "thin"
       private: no
     - name: "memory"
-      prompt: "Memory Size"
+      prompt: "Memory Size (MB)"
       default: "1024"
       private: no
     - name: "cpu"
@@ -81,32 +78,35 @@
       private: no
 
   tasks:
-    - name: Deploy guest from template
-      vmware_guest:
-        validate_certs: False
-        hostname: "{{ vcenter }}"
-        username: "{{ user }}"
-        password: "{{ pass }}"
-        esxi_hostname: "{{ esxi_hostname }}"
-        datacenter: "{{ datacenter }}"
-        name: "{{ vmname }}"
-        template: "{{ template }}"
-        folder: "{{ folder }}"
-        disk:
-          - size_gb: "{{ disk }}"
-            type: "{{ disktype }}"
-            datastore: "{{ datastore }}"
-        hardware:
-          - memory_mb: "{{ memory }}"
-            num_cpus: "{{ cpu }}"
-            scsi: paravirtual
-        networks:
-          - ip: "{{ vmip }}"
-            netmask: "{{ netmask }}"
-            gateway: "{{ gateway }}"
-            dns_servers: "{{ dns }}"
-            device_type: "{{ devicetype }}"
-        wait_for_ip_address: yes
-        state: poweredon
-      
+  - name: Deploy guest from template
+    vmware_guest:
+      validate_certs: False
+      hostname: "{{ vcenter }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      esxi_hostname: "{{ esxi_hostname }}"
+      datacenter: "{{ datacenter }}"
+      name: "{{ vmname }}"
+      state: poweredon
+      template: "{{ template }}"
+ #     folder: "{{ folder }}"
+      disk:
+      - size_gb: "{{ disk }}"
+        type: "{{ disktype }}"
+        datastore: "{{ datastore }}"
+      hardware:
+        memory_mb: "{{ memory }}"
+        num_cpus: "{{ cpu }}"
+        scsi: paravirtual
+      networks:
+      - name: VM Network
+        ip: "{{ vmip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        dns_servers: "{{ dns }}"
+        device_type: "{{ devicetype }}"
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    registry: deploy
+          
       
