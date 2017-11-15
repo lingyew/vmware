@@ -1,6 +1,12 @@
 ---
 # Readme: Need to make sure when creating the template, the base OS have VMware Tools installed. Otherwise, the changing of network IP doesn't work.
 
+# On the Ansible server, pre-requisite 
+#  yum install python-pyvmomi
+
+# To run playboook without host_key_checking, the command is as follows:
+# ansible-playbook -i hosts -e 'host_key_checking=false' test.yml
+
 
 - name: Create VMware guest
   hosts: all
@@ -116,6 +122,9 @@
         gateway: "{{ gateway }}"
         dns_servers: "{{ dns }}"
         device_type: "{{ devicetype }}"
+      customization:
+        hostname: "{{ newhostname }}"
+        
       wait_for_ip_address: yes
     delegate_to: localhost
     registry: deploy
