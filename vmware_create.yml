@@ -80,7 +80,7 @@
 
   tasks:
     - name: Deploy guest from template
-      vsphere_guest:
+      vmware_guest:
         validate_certs: False
         hostname: "{{ vcenter }}"
         username: "{{ user }}"
