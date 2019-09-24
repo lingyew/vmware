@@ -16,7 +16,7 @@
   vars_prompt:
     - name: "vcenter"
       prompt: "vCenter hostname?"
-      default: "192.168.1.108"
+      default: "192.168.100.200"
       private: no
     - name: "user"
       prompt: "Enter vsphere username"
@@ -27,7 +27,7 @@
       private: yes
     - name: "esxi_hostname"
       prompt: "ESXi Hostname where the VM will run"
-      default: "192.168.1.107"
+      default: "192.168.100.100"
       private: no
     - name: "datacenter"
       prompt: "Datacenter"
@@ -35,7 +35,7 @@
       private: no
     - name: "datastore"
       prompt: "Datastore?"
-      default: "datastore1"
+      default: "FlasArray-SC1"
       private: no
     - name: "vmname"
       prompt: "VM Name"
@@ -47,7 +47,7 @@
 #      private: no
     - name: "template"
       prompt: "Template"
-      default: "centos_template"
+      default: "vVol_Ubuntu18.04VanillaTemplate"
       private: no
     - name: "guestid"
       prompt: "Guest ID"
@@ -55,7 +55,7 @@
       private: no
     - name: "disk"
       prompt: "Disk Capacity GB"
-      default: "20"
+      default: "500"
       private: no
     - name: "disktype"
       prompt: "Disk Type"
@@ -63,15 +63,15 @@
       private: no
     - name: "memory"
       prompt: "Memory Size (MB)"
-      default: "1024"
+      default: "4096"
       private: no
     - name: "cpu"
       prompt: "Number of CPU"
-      default: "1"
+      default: "4"
       private: no
     - name: "vmip"
       prompt: "VM IP Address"
-      default: "192.168.1.30"
+      default: "192.168.100.111"
       private: no      
     - name: "netmask"
       prompt: "Netmask"
@@ -79,7 +79,7 @@
       private: no
     - name: "gateway"
       prompt: "Gateway"
-      default: "192.168.1.1"
+      default: "192.168.100.1"
       private: no
     - name: "dns"
       prompt: "DNS"
